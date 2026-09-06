@@ -41,20 +41,24 @@ def listing_matches_model(listing: Listing, model_name: str) -> bool:
     return True
 
 
-def is_excluded_listing(listing: Listing, exclude_keywords: list[str], min_price_pln: float) -> bool:
+def exclusion_reason(listing: Listing, exclude_keywords: list[str], min_price_pln: float) -> Optional[str]:
     """
-    Zwraca True, jeśli ogłoszenie należy całkowicie pominąć (nie jest prawdziwym
-    telefonem - to akcesorium, atrapa, część, albo cena jest nierealnie niska).
-    Wywoływać PRZED wykrywaniem uszkodzeń i PRZED liczeniem wartości rynkowej,
-    żeby takie ogłoszenia nie zaniżały mediany cen dla danego modelu.
+    Zwraca powód wykluczenia ogłoszenia (string) albo None, jeśli ogłoszenie
+    powinno zostać uwzględnione w analizie. Powód jest używany tylko do logów
+    diagnostycznych - żeby widzieć w GitHub Actions DLACZEGO coś zostało odrzucone.
     """
     if listing.price_pln < min_price_pln:
-        return True
+        return f"cena {listing.price_pln:.0f} zł < próg {min_price_pln:.0f} zł"
     text = f"{listing.title} {listing.description}".lower()
     for kw in exclude_keywords:
         if kw.lower() in text:
-            return True
-    return False
+            return f"słowo kluczowe '{kw}'"
+    return None
+
+
+def is_excluded_listing(listing: Listing, exclude_keywords: list[str], min_price_pln: float) -> bool:
+    """Zwraca True, jeśli ogłoszenie należy całkowicie pominąć. Patrz exclusion_reason()."""
+    return exclusion_reason(listing, exclude_keywords, min_price_pln) is not None
 
 
 def detect_damage(listing: Listing, damage_keywords: list[str]) -> tuple[bool, Optional[str]]:

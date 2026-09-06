@@ -87,10 +87,16 @@ def analyze_phone_listings(cfg: dict, phone: dict, listings: list[Listing], alle
     # Usuwamy akcesoria/atrapy/nierealnie tanie ogłoszenia PRZED czymkolwiek innym,
     # żeby nie zaniżały mediany ceny rynkowej dla całego modelu.
     before = len(listings)
-    listings = [
-        l for l in listings
-        if not pricing.is_excluded_listing(l, exclude_keywords, min_listing_price)
-    ]
+    kept = []
+    shown_examples = 0
+    for l in listings:
+        reason = pricing.exclusion_reason(l, exclude_keywords, min_listing_price)
+        if reason is None:
+            kept.append(l)
+        elif shown_examples < 3:
+            print(f"    odrzucono [{l.source}] \"{l.title}\" ({l.price_pln:.0f} zł) - {reason}")
+            shown_examples += 1
+    listings = kept
     removed = before - len(listings)
     if removed:
         print(f"  odfiltrowano {removed} ogłoszeń (akcesoria/atrapy/podróbki/zbyt niska cena)")
@@ -99,8 +105,16 @@ def analyze_phone_listings(cfg: dict, phone: dict, listings: list[Listing], alle
     # (portale zwracają też podobne, ale różne modele przy "luźnym" dopasowaniu).
     before_model_check = len(listings)
     phone_model_name = listings[0].phone_model if listings else None
+    kept_model = []
+    shown_model_examples = 0
     if phone_model_name:
-        listings = [l for l in listings if pricing.listing_matches_model(l, phone_model_name)]
+        for l in listings:
+            if pricing.listing_matches_model(l, phone_model_name):
+                kept_model.append(l)
+            elif shown_model_examples < 3:
+                print(f"    odrzucono [{l.source}] \"{l.title}\" - niezgodny model (szukano: {phone_model_name})")
+                shown_model_examples += 1
+        listings = kept_model
     removed_model = before_model_check - len(listings)
     if removed_model:
         print(f"  odfiltrowano {removed_model} ogłoszeń (niezgodny model)")
@@ -123,9 +137,16 @@ def analyze_phone_listings(cfg: dict, phone: dict, listings: list[Listing], alle
             if repair_query:
                 try:
                     price = allegro.get_cheapest_part_price(repair_query)
-                    repair_cost = price if price is not None else 0.0
                 except Exception as e:
                     print(f"[allegro parts] Błąd dla '{repair_query}': {e}")
+                    # Nie znamy kosztu części (Allegro nie odpowiedziało) - pomijamy
+                    # tę ofertę, zamiast fałszywie zakładać, że naprawa jest darmowa.
+                    continue
+                if price is None:
+                    # Allegro odpowiedziało, ale nie znalazło żadnej pasującej części -
+                    # też pomijamy, z tego samego powodu.
+                    continue
+                repair_cost = price
             else:
                 # Uszkodzenie wykryte, ale nie wiadomo jakiej części szukać -
                 # pomijamy tę ofertę, żeby nie zaniżyć kosztu naprawy.
