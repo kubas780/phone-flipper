@@ -95,7 +95,13 @@ def analyze_phone_listings(cfg: dict, listings: list[Listing], allegro: AllegroC
 
     for listing in listings:
         listing.is_damaged, listing.detected_damage = pricing.detect_damage(listing, damage_keywords)
-
+    before_model_check = len(listings)
+    phone_model_name = listings[0].phone_model if listings else None
+    if phone_model_name:
+        listings = [l for l in listings if pricing.listing_matches_model(l, phone_model_name)]
+    removed_model = before_model_check - len(listings)
+    if removed_model:
+        print(f"  odfiltrowano {removed_model} ogłoszeń (niezgodny model)")
     opportunities = []
     for listing in listings:
         market_value, n_comparables = pricing.estimate_market_value(
