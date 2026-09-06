@@ -79,6 +79,19 @@ def analyze_phone_listings(cfg: dict, listings: list[Listing], allegro: AllegroC
     min_profit = cfg["min_profit_pln"]
     safety_margin = cfg["safety_margin_pln"]
     min_comparables = cfg["comparables_min_count"]
+    exclude_keywords = cfg["exclude_keywords"]
+    min_listing_price = cfg["min_listing_price_pln"]
+
+    # Usuwamy akcesoria/atrapy/nierealnie tanie ogłoszenia PRZED czymkolwiek innym,
+    # żeby nie zaniżały mediany ceny rynkowej dla całego modelu.
+    before = len(listings)
+    listings = [
+        l for l in listings
+        if not pricing.is_excluded_listing(l, exclude_keywords, min_listing_price)
+    ]
+    removed = before - len(listings)
+    if removed:
+        print(f"  odfiltrowano {removed} ogłoszeń (akcesoria/atrapy/zbyt niska cena)")
 
     for listing in listings:
         listing.is_damaged, listing.detected_damage = pricing.detect_damage(listing, damage_keywords)
