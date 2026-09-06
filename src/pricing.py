@@ -4,7 +4,18 @@ from typing import Optional
 
 from models import Listing, Opportunity
 
-
+def is_excluded_listing(listing: Listing, exclude_keywords: list[str], min_price_pln: float) -> bool:
+    """
+    Zwraca True, jeśli ogłoszenie należy całkowicie pominąć (nie jest prawdziwym
+    telefonem - to akcesorium, atrapa, część, albo cena jest nierealnie niska).
+    """
+    if listing.price_pln < min_price_pln:
+        return True
+    text = f"{listing.title} {listing.description}".lower()
+    for kw in exclude_keywords:
+        if kw.lower() in text:
+            return True
+    return False
 def detect_damage(listing: Listing, damage_keywords: list[str]) -> tuple[bool, Optional[str]]:
     text = f"{listing.title} {listing.description}".lower()
     for kw in damage_keywords:
