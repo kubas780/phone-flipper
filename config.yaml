@@ -27,129 +27,174 @@ phones:
   - name: "iPhone 14"
     query: "iPhone 14"
     search_variants: []
+    min_price_pln: 500
   - name: "iPhone 14 Plus"
     query: "iPhone 14 Plus"
     search_variants: []
+    min_price_pln: 550
   - name: "iPhone 14 Pro"
     query: "iPhone 14 Pro"
     search_variants: []
+    min_price_pln: 650
   - name: "iPhone 14 Pro Max"
     query: "iPhone 14 Pro Max"
     search_variants: []
+    min_price_pln: 700
   - name: "iPhone 15"
     query: "iPhone 15"
     search_variants: []
+    min_price_pln: 550
   - name: "iPhone 15 Plus"
     query: "iPhone 15 Plus"
     search_variants: []
+    min_price_pln: 600
   - name: "iPhone 15 Pro"
     query: "iPhone 15 Pro"
     search_variants: []
+    min_price_pln: 700
   - name: "iPhone 15 Pro Max"
     query: "iPhone 15 Pro Max"
     search_variants: []
+    min_price_pln: 800
   - name: "iPhone 16"
     query: "iPhone 16"
     search_variants: []
+    min_price_pln: 600
   - name: "iPhone 16 Plus"
     query: "iPhone 16 Plus"
     search_variants: []
+    min_price_pln: 650
   - name: "iPhone 16 Pro"
     query: "iPhone 16 Pro"
     search_variants: []
+    min_price_pln: 750
   - name: "iPhone 16 Pro Max"
     query: "iPhone 16 Pro Max"
     search_variants: []
+    min_price_pln: 850
   - name: "iPhone 17"
     query: "iPhone 17"
     search_variants: []
+    min_price_pln: 700
   - name: "iPhone Air"
     query: "iPhone Air"
     search_variants: []
+    min_price_pln: 800
   - name: "iPhone 17 Pro"
     query: "iPhone 17 Pro"
     search_variants: []
+    min_price_pln: 900
   - name: "iPhone 17 Pro Max"
     query: "iPhone 17 Pro Max"
     search_variants: []
+    min_price_pln: 1000
 
   # --- Samsung od S23 Ultra wzwyż ---
   - name: "Samsung Galaxy S23 Ultra"
     query: "Samsung Galaxy S23 Ultra"
     search_variants: []
+    min_price_pln: 700
   - name: "Samsung Galaxy S24"
     query: "Samsung Galaxy S24"
     search_variants: []
+    min_price_pln: 550
   - name: "Samsung Galaxy S24+"
     query: "Samsung Galaxy S24 Plus"
     search_variants: []
+    min_price_pln: 650
   - name: "Samsung Galaxy S24 Ultra"
     query: "Samsung Galaxy S24 Ultra"
     search_variants: []
+    min_price_pln: 800
   - name: "Samsung Galaxy S25"
     query: "Samsung Galaxy S25"
     search_variants: []
+    min_price_pln: 650
   - name: "Samsung Galaxy S25+"
     query: "Samsung Galaxy S25 Plus"
     search_variants: []
+    min_price_pln: 750
   - name: "Samsung Galaxy S25 Ultra"
     query: "Samsung Galaxy S25 Ultra"
     search_variants: []
+    min_price_pln: 900
   - name: "Samsung Galaxy S25 Edge"
     query: "Samsung Galaxy S25 Edge"
     search_variants: []
+    min_price_pln: 850
   - name: "Samsung Galaxy S26"
     query: "Samsung Galaxy S26"
     search_variants: []
+    min_price_pln: 750
   - name: "Samsung Galaxy S26+"
     query: "Samsung Galaxy S26 Plus"
     search_variants: []
+    min_price_pln: 850
   - name: "Samsung Galaxy S26 Ultra"
     query: "Samsung Galaxy S26 Ultra"
     search_variants: []
+    min_price_pln: 1000
 
   # --- Samsung FE (Fan Edition) - popularne, szybko się sprzedają ---
   - name: "Samsung Galaxy S24 FE"
     query: "Samsung Galaxy S24 FE"
     search_variants: []
+    min_price_pln: 450
   - name: "Samsung Galaxy S25 FE"
     query: "Samsung Galaxy S25 FE"
     search_variants: []
+    min_price_pln: 500
   - name: "Samsung Galaxy S26 FE"
     query: "Samsung Galaxy S26 FE"
     search_variants: []
+    min_price_pln: 550
 
   # --- Samsung składane (Z Fold / Z Flip) - wysoka wartość, szybka rotacja ---
   - name: "Samsung Galaxy Z Fold5"
     query: "Samsung Galaxy Z Fold5"
     search_variants: []
+    min_price_pln: 1200
   - name: "Samsung Galaxy Z Fold6"
     query: "Samsung Galaxy Z Fold6"
     search_variants: []
+    min_price_pln: 1400
   - name: "Samsung Galaxy Z Fold7"
     query: "Samsung Galaxy Z Fold7"
     search_variants: []
+    min_price_pln: 1600
   - name: "Samsung Galaxy Z Fold8"
     query: "Samsung Galaxy Z Fold8"
     search_variants: []
+    min_price_pln: 1800
   - name: "Samsung Galaxy Z Fold8 Ultra"
     query: "Samsung Galaxy Z Fold8 Ultra"
     search_variants: []
+    min_price_pln: 2000
   - name: "Samsung Galaxy Z Flip5"
     query: "Samsung Galaxy Z Flip5"
     search_variants: []
+    min_price_pln: 700
   - name: "Samsung Galaxy Z Flip6"
     query: "Samsung Galaxy Z Flip6"
     search_variants: []
+    min_price_pln: 800
   - name: "Samsung Galaxy Z Flip7"
     query: "Samsung Galaxy Z Flip7"
     search_variants: []
+    min_price_pln: 900
   - name: "Samsung Galaxy Z Flip7 FE"
     query: "Samsung Galaxy Z Flip7 FE"
     search_variants: []
+    min_price_pln: 600
   - name: "Samsung Galaxy Z Flip8"
     query: "Samsung Galaxy Z Flip8"
     search_variants: []
+    min_price_pln: 1000
+
+# Słowa wskazujące, że to NIE jest prawdziwy telefon, tylko akcesorium/atrapa/część -
+# takie ogłoszenia są całkowicie pomijane (nie wchodzą ani do wyceny rynkowej,
+# ani do wykrywania okazji). To najczęstsza przyczyna "fałszywych" okazji i
+# zaniżonej wyceny rynkowej (np. etui za 20 zł myli medianę cen).
 exclude_keywords:
   - "etui"
   - "case"
@@ -188,7 +233,7 @@ exclude_keywords:
   - "zdjecie telefonu"
   - "instrukcja obsługi"
   - "instrukcja obslugi"
-    - "kopia"
+  - "kopia"
   - "replika"
   - "podróbka"
   - "podrobka"
@@ -199,7 +244,17 @@ exclude_keywords:
   - "zamiennik chiński"
   - "zamiennik chinski"
 
+# Domyślna minimalna cena (w zł) - używana TYLKO jeśli dany model w liście `phones`
+# nie ma własnego pola `min_price_pln`. Każdy model w liście `phones` ma teraz
+# swój indywidualny, realny próg (patrz pole `min_price_pln` przy każdym modelu) -
+# to znacznie lepsze zabezpieczenie niż jeden próg dla wszystkich, bo np. Z Fold8
+# Ultra nie powinien nigdy pojawić się jako "okazja" za 250 zł (to na pewno pomyłka
+# kategorii/literówka w cenie/oszustwo), a dla iPhone'a 14 250 zł to sensowny dolny próg.
+# UWAGA: wartości min_price_pln przy modelach to moje przybliżone szacunki - jeśli po
+# obserwacji realnych ogłoszeń uznasz, że dla któregoś modelu próg powinien być inny,
+# po prostu zmień liczbę przy tym modelu w sekcji `phones` powyżej.
 min_listing_price_pln: 250
+
 # Słowa kluczowe wskazujące, że telefon jest uszkodzony (do wykrywania w opisie/tytule)
 damage_keywords:
   - "uszkodzon"
