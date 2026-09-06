@@ -1,0 +1,187 @@
+# =========================================================
+# KONFIGURACJA - edytuj ten plik żeby dostosować apkę
+# =========================================================
+
+# Minimalny zysk (w zł), przy którym apka wyśle powiadomienie
+min_profit_pln: 200
+
+# Margines bezpieczeństwa - dodatkowo odejmowany od szacowanego zysku
+# (na nieprzewidziane koszty, transport, opakowanie, czas)
+safety_margin_pln: 30
+
+# Ile aktywnych/podobnych ofert brać pod uwagę przy szacowaniu wartości rynkowej
+comparables_min_count: 5
+
+# Co ile minut apka ma sprawdzać ogłoszenia (używane w harmonogramie GitHub Actions).
+# Przy dużej liczbie modeli (jak w tej konfiguracji: ~40) każdy przebieg to bardzo
+# dużo zapytań do 4 serwisów (40 modeli x 4 źródła = 160+ zapytań) - 45 minut jest
+# bezpieczniejsze niż 15-30 (mniejsze ryzyko zablokowania przez OLX/Vinted).
+# Jeśli zawęzisz listę modeli, możesz skrócić ten czas.
+scan_interval_minutes: 45
+
+# Lista modeli telefonów do monitorowania.
+# "query" - fraza wyszukiwania używana na wszystkich portalach
+# "search_variants" - dodatkowe warianty zapytań (opcjonalne, np. inny zapis nazwy)
+phones:
+  # --- iPhone od 14 wzwyż ---
+  - name: "iPhone 14"
+    query: "iPhone 14"
+    search_variants: []
+  - name: "iPhone 14 Plus"
+    query: "iPhone 14 Plus"
+    search_variants: []
+  - name: "iPhone 14 Pro"
+    query: "iPhone 14 Pro"
+    search_variants: []
+  - name: "iPhone 14 Pro Max"
+    query: "iPhone 14 Pro Max"
+    search_variants: []
+  - name: "iPhone 15"
+    query: "iPhone 15"
+    search_variants: []
+  - name: "iPhone 15 Plus"
+    query: "iPhone 15 Plus"
+    search_variants: []
+  - name: "iPhone 15 Pro"
+    query: "iPhone 15 Pro"
+    search_variants: []
+  - name: "iPhone 15 Pro Max"
+    query: "iPhone 15 Pro Max"
+    search_variants: []
+  - name: "iPhone 16"
+    query: "iPhone 16"
+    search_variants: []
+  - name: "iPhone 16 Plus"
+    query: "iPhone 16 Plus"
+    search_variants: []
+  - name: "iPhone 16 Pro"
+    query: "iPhone 16 Pro"
+    search_variants: []
+  - name: "iPhone 16 Pro Max"
+    query: "iPhone 16 Pro Max"
+    search_variants: []
+  - name: "iPhone 17"
+    query: "iPhone 17"
+    search_variants: []
+  - name: "iPhone Air"
+    query: "iPhone Air"
+    search_variants: []
+  - name: "iPhone 17 Pro"
+    query: "iPhone 17 Pro"
+    search_variants: []
+  - name: "iPhone 17 Pro Max"
+    query: "iPhone 17 Pro Max"
+    search_variants: []
+
+  # --- Samsung od S23 Ultra wzwyż ---
+  - name: "Samsung Galaxy S23 Ultra"
+    query: "Samsung Galaxy S23 Ultra"
+    search_variants: []
+  - name: "Samsung Galaxy S24"
+    query: "Samsung Galaxy S24"
+    search_variants: []
+  - name: "Samsung Galaxy S24+"
+    query: "Samsung Galaxy S24 Plus"
+    search_variants: []
+  - name: "Samsung Galaxy S24 Ultra"
+    query: "Samsung Galaxy S24 Ultra"
+    search_variants: []
+  - name: "Samsung Galaxy S25"
+    query: "Samsung Galaxy S25"
+    search_variants: []
+  - name: "Samsung Galaxy S25+"
+    query: "Samsung Galaxy S25 Plus"
+    search_variants: []
+  - name: "Samsung Galaxy S25 Ultra"
+    query: "Samsung Galaxy S25 Ultra"
+    search_variants: []
+  - name: "Samsung Galaxy S25 Edge"
+    query: "Samsung Galaxy S25 Edge"
+    search_variants: []
+  - name: "Samsung Galaxy S26"
+    query: "Samsung Galaxy S26"
+    search_variants: []
+  - name: "Samsung Galaxy S26+"
+    query: "Samsung Galaxy S26 Plus"
+    search_variants: []
+  - name: "Samsung Galaxy S26 Ultra"
+    query: "Samsung Galaxy S26 Ultra"
+    search_variants: []
+
+  # --- Samsung FE (Fan Edition) - popularne, szybko się sprzedają ---
+  - name: "Samsung Galaxy S24 FE"
+    query: "Samsung Galaxy S24 FE"
+    search_variants: []
+  - name: "Samsung Galaxy S25 FE"
+    query: "Samsung Galaxy S25 FE"
+    search_variants: []
+  - name: "Samsung Galaxy S26 FE"
+    query: "Samsung Galaxy S26 FE"
+    search_variants: []
+
+  # --- Samsung składane (Z Fold / Z Flip) - wysoka wartość, szybka rotacja ---
+  - name: "Samsung Galaxy Z Fold5"
+    query: "Samsung Galaxy Z Fold5"
+    search_variants: []
+  - name: "Samsung Galaxy Z Fold6"
+    query: "Samsung Galaxy Z Fold6"
+    search_variants: []
+  - name: "Samsung Galaxy Z Fold7"
+    query: "Samsung Galaxy Z Fold7"
+    search_variants: []
+  - name: "Samsung Galaxy Z Fold8"
+    query: "Samsung Galaxy Z Fold8"
+    search_variants: []
+  - name: "Samsung Galaxy Z Fold8 Ultra"
+    query: "Samsung Galaxy Z Fold8 Ultra"
+    search_variants: []
+  - name: "Samsung Galaxy Z Flip5"
+    query: "Samsung Galaxy Z Flip5"
+    search_variants: []
+  - name: "Samsung Galaxy Z Flip6"
+    query: "Samsung Galaxy Z Flip6"
+    search_variants: []
+  - name: "Samsung Galaxy Z Flip7"
+    query: "Samsung Galaxy Z Flip7"
+    search_variants: []
+  - name: "Samsung Galaxy Z Flip7 FE"
+    query: "Samsung Galaxy Z Flip7 FE"
+    search_variants: []
+  - name: "Samsung Galaxy Z Flip8"
+    query: "Samsung Galaxy Z Flip8"
+    search_variants: []
+
+# Słowa kluczowe wskazujące, że telefon jest uszkodzony (do wykrywania w opisie/tytule)
+damage_keywords:
+  - "uszkodzon"
+  - "pęknię"
+  - "peknie"
+  - "rysa"
+  - "nie działa"
+  - "nie dziala"
+  - "zbita"
+  - "spalon"
+  - "na części"
+  - "na czesci"
+  - "do naprawy"
+  - "bateria słaba"
+  - "bateria slaba"
+  - "wyświetlacz"
+  - "matryca"
+
+# Typowe usterki -> czego szukać jako część zamienna na Allegro
+# (klucz: fragment tekstu z ogłoszenia, wartość: fraza do wyszukania części)
+damage_to_part_query:
+  "wyświetlacz": "wyświetlacz oryginalny {model}"
+  "matryca": "wyświetlacz oryginalny {model}"
+  "bateria": "bateria oryginalna {model}"
+  "szyb": "szybka oryginalna {model}"
+  "aparat": "aparat oryginalny {model}"
+  "gniazdo ładowania": "gniazdo ładowania {model}"
+
+# Źródła do przeszukania - można wyłączyć dowolne ustawiając false
+sources:
+  allegro: true
+  allegro_lokalnie: true
+  olx: true
+  vinted: true
