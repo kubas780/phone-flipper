@@ -3,18 +3,23 @@ Vinted nie udostępnia oficjalnego API dla zewnętrznych aplikacji, ale ich
 własna strona internetowa korzysta wewnętrznie z endpointu
 /api/v2/catalog/items, którego tu używamy.
 
+WAŻNE: ograniczamy wyniki do kategorii "Telefony komórkowe" (catalog_ids=3661).
+Bez tego wyszukiwanie zwraca też etui/szkła/baterie (te są dużo tańsze i przy
+sortowaniu "od najtańszych" zajmują całą pierwszą stronę wyników, zanim
+pojawi się jakikolwiek prawdziwy telefon). Ograniczenie do kategorii telefonów
+usuwa większość tego szumu u źródła.
+
 RYZYKO: Vinted potrafi blokować ruch z adresów IP chmur (w tym GitHub Actions).
 Jeśli ten moduł zacznie zwracać błędy 401/403, najprościej jest:
   1) zwiększyć odstępy między zapytaniami (sources w config.yaml),
   2) lub uruchamiać skrypt lokalnie / na własnym serwerze zamiast GitHub Actions
      (patrz README.md -> "Alternatywny hosting").
-Telefony (kategoria elektronika) na Vinted pojawiają się rzadziej niż na
-pozostałych portalach - to źródło jest tu traktowane jako dodatkowe.
 """
 import requests
 
 BASE_URL = "https://www.vinted.pl"
 SEARCH_ENDPOINT = f"{BASE_URL}/api/v2/catalog/items"
+PHONES_CATALOG_ID = 3661  # kategoria "Telefony komórkowe" na Vinted
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
                   "(KHTML, like Gecko) Chrome/124.0 Safari/537.36",
@@ -40,6 +45,7 @@ def search(query: str, phone_model: str, limit: int = 30) -> list["Listing"]:
         "search_text": query,
         "per_page": limit,
         "order": "price_low_to_high",
+        "catalog_ids": PHONES_CATALOG_ID,
     }
     resp = session.get(SEARCH_ENDPOINT, params=params, timeout=20)
     resp.raise_for_status()
