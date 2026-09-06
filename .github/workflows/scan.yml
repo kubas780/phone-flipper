@@ -1,0 +1,44 @@
+name: Skanowanie okazji na telefony
+
+on:
+  schedule:
+    # Uruchamia się o :00 i :45 każdej godziny (naprzemiennie 45 i 15 minut odstępu -
+    # to ograniczenie formatu cron, minuty zawsze zerują się co godzinę).
+    # Dopasowane do liczby monitorowanych modeli (patrz config.yaml).
+    # Uwaga: GitHub czasem dodatkowo opóźnia harmonogram przy dużym obciążeniu.
+    - cron: "0,45 * * * *"
+  workflow_dispatch: {}  # pozwala też uruchomić ręcznie z zakładki "Actions"
+
+permissions:
+  contents: write  # potrzebne, żeby zapisać z powrotem seen_listings.json
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pobierz repozytorium
+        uses: actions/checkout@v4
+
+      - name: Ustaw Pythona
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Zainstaluj zależności
+        run: pip install -r requirements.txt
+
+      - name: Uruchom skanowanie
+        env:
+          ALLEGRO_CLIENT_ID: ${{ secrets.ALLEGRO_CLIENT_ID }}
+          ALLEGRO_CLIENT_SECRET: ${{ secrets.ALLEGRO_CLIENT_SECRET }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python src/main.py
+
+      - name: Zapisz stan (żeby nie powtarzać powiadomień)
+        run: |
+          git config user.name "phone-flipper-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add seen_listings.json
+          git diff --staged --quiet || git commit -m "Aktualizacja stanu skanowania [skip ci]"
+          git push
