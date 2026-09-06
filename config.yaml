@@ -188,6 +188,16 @@ exclude_keywords:
   - "zdjecie telefonu"
   - "instrukcja obsługi"
   - "instrukcja obslugi"
+    - "kopia"
+  - "replika"
+  - "podróbka"
+  - "podrobka"
+  - "klon"
+  - "super kopia"
+  - "chińska podróbka"
+  - "chinska podrobka"
+  - "zamiennik chiński"
+  - "zamiennik chinski"
 
 min_listing_price_pln: 250
 # Słowa kluczowe wskazujące, że telefon jest uszkodzony (do wykrywania w opisie/tytule)
