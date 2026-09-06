@@ -72,7 +72,7 @@ def collect_listings_for_phone(cfg: dict, phone: dict, allegro: AllegroClient) -
     return listings
 
 
-def analyze_phone_listings(cfg: dict, listings: list[Listing], allegro: AllegroClient) -> list:
+def analyze_phone_listings(cfg: dict, phone: dict, listings: list[Listing], allegro: AllegroClient) -> list:
     """Wykrywa uszkodzenia, szacuje wartość rynkową i liczy zysk dla ogłoszeń JEDNEGO modelu."""
     damage_keywords = cfg["damage_keywords"]
     damage_to_part = cfg["damage_to_part_query"]
@@ -80,7 +80,9 @@ def analyze_phone_listings(cfg: dict, listings: list[Listing], allegro: AllegroC
     safety_margin = cfg["safety_margin_pln"]
     min_comparables = cfg["comparables_min_count"]
     exclude_keywords = cfg["exclude_keywords"]
-    min_listing_price = cfg["min_listing_price_pln"]
+    # Indywidualny próg ceny dla tego modelu (jeśli podany w config.yaml przy modelu),
+    # w przeciwnym razie globalny domyślny próg.
+    min_listing_price = phone.get("min_price_pln", cfg["min_listing_price_pln"])
 
     # Usuwamy akcesoria/atrapy/nierealnie tanie ogłoszenia PRZED czymkolwiek innym,
     # żeby nie zaniżały mediany ceny rynkowej dla całego modelu.
@@ -91,10 +93,10 @@ def analyze_phone_listings(cfg: dict, listings: list[Listing], allegro: AllegroC
     ]
     removed = before - len(listings)
     if removed:
-        print(f"  odfiltrowano {removed} ogłoszeń (akcesoria/atrapy/zbyt niska cena)")
+        print(f"  odfiltrowano {removed} ogłoszeń (akcesoria/atrapy/podróbki/zbyt niska cena)")
 
-    for listing in listings:
-        listing.is_damaged, listing.detected_damage = pricing.detect_damage(listing, damage_keywords)
+    # Weryfikacja, że ogłoszenie faktycznie dotyczy DOKŁADNIE szukanego modelu
+    # (portale zwracają też podobne, ale różne modele przy "luźnym" dopasowaniu).
     before_model_check = len(listings)
     phone_model_name = listings[0].phone_model if listings else None
     if phone_model_name:
@@ -102,6 +104,10 @@ def analyze_phone_listings(cfg: dict, listings: list[Listing], allegro: AllegroC
     removed_model = before_model_check - len(listings)
     if removed_model:
         print(f"  odfiltrowano {removed_model} ogłoszeń (niezgodny model)")
+
+    for listing in listings:
+        listing.is_damaged, listing.detected_damage = pricing.detect_damage(listing, damage_keywords)
+
     opportunities = []
     for listing in listings:
         market_value, n_comparables = pricing.estimate_market_value(
@@ -152,7 +158,7 @@ def main():
         print(f"Skanuję: {phone['name']}...")
         try:
             listings = collect_listings_for_phone(cfg, phone, allegro)
-            opportunities = analyze_phone_listings(cfg, listings, allegro)
+            opportunities = analyze_phone_listings(cfg, phone, listings, allegro)
         except Exception:
             print(f"Błąd przy przetwarzaniu {phone['name']}:")
             traceback.print_exc()
