@@ -1,9 +1,10 @@
 """Wykrywanie uszkodzeń w ogłoszeniu, szacowanie wartości rynkowej i zysku."""
 import statistics
+import re
+
 from typing import Optional
 
 from models import Listing, Opportunity
-import re
 
 _KNOWN_VARIANT_TOKENS = {"ultra", "plus", "pro", "max", "fe", "edge", "air"}
 _TOKEN_RE = re.compile(r"[a-ząćęłńóśźż]+|\d+", re.IGNORECASE)
