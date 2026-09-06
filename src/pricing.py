@@ -3,7 +3,29 @@ import statistics
 from typing import Optional
 
 from models import Listing, Opportunity
+import re
 
+_KNOWN_VARIANT_TOKENS = {"ultra", "plus", "pro", "max", "fe", "edge", "air"}
+_TOKEN_RE = re.compile(r"[a-ząćęłńóśźż]+|\d+", re.IGNORECASE)
+
+
+def _tokenize(text: str) -> set[str]:
+    text = text.lower().replace("+", " plus ")
+    return set(_TOKEN_RE.findall(text))
+
+
+def listing_matches_model(listing: "Listing", model_name: str) -> bool:
+    name_tokens = _tokenize(model_name)
+    title_tokens = _tokenize(f"{listing.title} {listing.description}")
+
+    if not name_tokens.issubset(title_tokens):
+        return False
+
+    forbidden = _KNOWN_VARIANT_TOKENS - name_tokens
+    if forbidden & title_tokens:
+        return False
+
+    return True
 def is_excluded_listing(listing: Listing, exclude_keywords: list[str], min_price_pln: float) -> bool:
     """
     Zwraca True, jeśli ogłoszenie należy całkowicie pominąć (nie jest prawdziwym
