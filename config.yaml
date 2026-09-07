@@ -285,12 +285,15 @@ damage_to_part_query:
 
 # Źródła do przeszukania - można wyłączyć dowolne ustawiając false
 sources:
-  # Tymczasowo wyłączone (2026): Allegro API blokuje /offers/listing dla
-  # niezweryfikowanych aplikacji (błąd 403 "VerificationRequired" - wysłano wniosek
-  # o weryfikację, czekamy na odpowiedź). OLX i Allegro Lokalnie prawdopodobnie
-  # blokują adresy IP GitHub Actions (403/429). Włącz je z powrotem (true), jeśli
-  # sytuacja się zmieni - np. po weryfikacji Allegro albo przeniesieniu apki na
-  # własny komputer (adresy domowe rzadziej są blokowane).
+  # Allegro: WYŁĄCZONE NA STAŁE. Allegro oficjalnie potwierdziło (zgłoszenie
+  # wysłane przez GitHub, 2026), że endpoint GET /offers/listing "nie jest już
+  # publicznie udostępniany" - to nie problem konfiguracji, tylko świadoma
+  # decyzja Allegro. Nie ma sensu włączać z powrotem, dopóki Allegro nie zmieni
+  # tej polityki (mało prawdopodobne).
+  #
+  # OLX i Allegro Lokalnie: wyłączone, bo blokują adresy IP GitHub Actions
+  # (błędy 403/429). Można spróbować włączyć (true) po przeniesieniu apki na
+  # własny komputer (adresy domowe rzadziej są blokowane) - patrz README.md.
   allegro: false
   allegro_lokalnie: false
   olx: false
